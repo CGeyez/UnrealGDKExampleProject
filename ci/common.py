@@ -11,7 +11,9 @@ def log(msg, expand=False):
 
 
 def run_command(cmd, args):
-    os.system('%s %s' % (cmd, args))
+    cmds = '%s %s' % (cmd, args)
+    print(cmds)
+    os.system(cmds)
 
 
 def run_shell(cmds):
