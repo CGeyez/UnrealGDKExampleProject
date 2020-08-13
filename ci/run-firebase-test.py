@@ -59,11 +59,10 @@ def gcloud_upload(app_platform, app_path, gcloud_storage_keyword, success_keywor
         app_platform,
         'run',
         '--type=game-loop',
-        '--app=%s' % app_path,
+        '--app="%s"' % app_path,
         '--scenario-numbers=1',
         '--format="json"',
     ]
-    print(cmds)
     res = common.run_shell(cmds)
     gcloud_storage_url = ''
     for line in res.stderr.readlines():

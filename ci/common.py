@@ -16,6 +16,7 @@ def run_command(cmd, args):
 
 def run_shell(cmds):
     cmdline = ' '.join(cmds)
+    print(cmdline)
     return subprocess.Popen(cmdline, shell=True, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
