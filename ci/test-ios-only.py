@@ -89,7 +89,7 @@ if __name__ == "__main__":
         os.mkdir(FIREBASE_LOG_DIR)
         
     # Set to firebase gcloud project both Windows & Mac
-    # switch_gcloud_project('chlorodize-bipennated-8024348')
+    switch_gcloud_project('chlorodize-bipennated-8024348')
 
     # Download app to local
     localpath = download_app()
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     gcloud_upload(app_platform, localpath)
 
     # Set to buildkite infrastructure gcloud project
-    # switch_gcloud_project(project)
+    switch_gcloud_project(project)
 
     # Update firebase succeed/total value
     exit(0)
