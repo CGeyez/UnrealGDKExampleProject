@@ -52,7 +52,7 @@ def check_firebase_log(app_platform, url, device, success_keyword):
 
 def gcloud_upload(app_platform, app_path):
     args = [
-        'beta',
+        'alpha',
         'firebase',
         'test',
         app_platform,
@@ -62,6 +62,7 @@ def gcloud_upload(app_platform, app_path):
         '--scenario-numbers=1',
         '--format="json"',
     ]
+    # gcloud alpha firebase test ios run
     print('%s exist:%d' % (app_path, os.path.isfile(app_path)))
     common.run_command('gcloud', ' '.join(args))
 
