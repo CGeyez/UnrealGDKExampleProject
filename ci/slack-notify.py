@@ -16,6 +16,7 @@ def slack_notify(channel, slack_webhook_url):
         'BUILDKITE_MESSAGE', 'test build message')
     gdk_branch_name = common.get_environment_variable('GDK_BRANCH', 'master')
     buildkite_commit = common.get_environment_variable('BUILDKITE_COMMIT', '')
+    # Set from generate-auto-token
     gdk_commit_hash = common.get_buildkite_meta_data('gdk_commit_hash')
     gdk_commit_url = 'https://github.com/spatialos/UnrealGDK/commit/%s' % gdk_commit_hash
     project_commit_url = 'https://github.com/spatialos/UnrealGDKExampleProject/commit/%s' % buildkite_commit
@@ -97,12 +98,16 @@ def slack_notify(channel, slack_webhook_url):
         json_message['attachments'][0]['fields'].insert(0, android_message)
     launch_deployment = common.get_environment_variable(
         'START_DEPLOYMENT', 'true')
+    
+    # Set from generate-pipeline-steps
     engine_version_count = common.get_buildkite_meta_data(
         'engine-version-count')
     if launch_deployment == 'true':
         for i in range(0, int(engine_version_count)):
             index_str = '%d' % (i + 1)
             name = 'deployment-name-%s' % index_str
+
+            # Set from generate-auto-token
             deployment_name = common.get_buildkite_meta_data(name)
             deployment_url = 'https://console.improbable.io/projects/%s/deployments/%s/overview' % (
                 project_name, deployment_name)
@@ -119,10 +124,8 @@ def slack_notify(channel, slack_webhook_url):
     return res.text == 'ok'
 
 
-if __name__ == '__main__':
-    slack_channel = common.get_environment_variable(
-        'SLACK_CHANNEL', '#unreal-gdk-builds')
-
+if __name__ == '__main__':    
+    common.log('generate-slack-webhook-url')
     cmds = [
         'imp-ci',
         'secrets',
@@ -139,7 +142,10 @@ if __name__ == '__main__':
             print('%s' % utf8)
     output = res.stdout.read().decode('UTF-8')
     slack_webhook_url = json.loads(output)['url']
+
     common.log('slack-notify')
+    slack_channel = common.get_environment_variable(
+        'SLACK_CHANNEL', '#unreal-gdk-builds')
     result = slack_notify(slack_channel, slack_webhook_url)
 
     exit_value = 0 if result == True else 1
