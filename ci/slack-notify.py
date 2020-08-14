@@ -109,7 +109,7 @@ def slack_notify(channel, slack_webhook_url):
             json_message['attachments'][0]['actions'].append(deployment_button)
     headers = {'Content-Type':'application/json', 'Accept':'text/plain'}
     res = requests.post(slack_webhook_url, data = json.dumps(json_message), headers=headers)
-    print(res)
+    return res.text == 'ok'
 
 
 if __name__ == '__main__':
@@ -133,5 +133,7 @@ if __name__ == '__main__':
     output = res.stdout.read().decode('UTF-8')
     slack_webhook_url = json.loads(output)['url']
     common.log('slack-notify')
-    slack_notify(slack_channel, slack_webhook_url)
-    
+    result = slack_notify(slack_channel, slack_webhook_url)
+
+    exit_value = 0 if result == True else 1
+    exit(exit_value)
